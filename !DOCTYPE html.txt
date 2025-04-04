@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bandwidth Measurement</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+    .container { text-align: center; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+    h1 { color: #333; }
+    .btn { padding: 10px 20px; font-size: 16px; background-color: #007BFF; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
+    .btn:hover { background-color: #0056b3; }
+    .result { margin-top: 20px; font-size: 18px; color: #333; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bandwidth Measurement</h1>
+    <button class="btn" id="startTest">Start Test</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('startTest').addEventListener('click', function () {
+      startBandwidthTest();
+    });
+
+    function startBandwidthTest() {
+      const startTime = Date.now();
+      const imageUrl = "https://www.gstatic.com/webp/gallery/1.jpg"; // Use a larger file for better measurement
+      const image = new Image();
+      
+      image.onload = function () {
+        const endTime = Date.now();
+        const duration = (endTime - startTime) / 1000; // in seconds
+        const fileSizeInBytes = 1024 * 1024 * 0.4; // Approximate file size in bytes (e.g., 400KB image)
+
+        // Calculate the bandwidth in bits per second (bps)
+        const bandwidth = (fileSizeInBytes * 8) / duration; // bps
+
+        document.getElementById('result').textContent = `Your bandwidth: ${formatBandwidth(bandwidth)}`;
+      };
+
+      image.src = imageUrl + "?cache_buster=" + new Date().getTime(); // Prevent caching
+    }
+
+    function formatBandwidth(bandwidth) {
+      if (bandwidth < 1000) {
+        return `${bandwidth.toFixed(2)} bps`;
+      } else if (bandwidth < 1000000) {
+        return `${(bandwidth / 1000).toFixed(2)} Kbps`;
+      } else if (bandwidth < 1000000000) {
+        return `${(bandwidth / 1000000).toFixed(2)} Mbps`;
+      } else {
+        return `${(bandwidth / 1000000000).toFixed(2)} Gbps`;
+      }
+    }
+  </script>
+</body>
+</html>

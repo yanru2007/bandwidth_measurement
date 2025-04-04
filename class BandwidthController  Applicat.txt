@@ -1,0 +1,5 @@
+class BandwidthController < ApplicationController
+  def index
+    # This will render the bandwidth measurement UI.
+  end
+end
